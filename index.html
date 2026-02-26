@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>NYC Mayor Approval Tracker</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-dashboard/quarto-dashboard.js"></script>
+<script src="site_libs/quarto-dashboard/stickythead.js"></script>
+<script src="site_libs/quarto-dashboard/datatables.min.js" kdttablesentinel="true"></script>
+<script src="site_libs/quarto-dashboard/pdfmake.min.js" kdttablesentinel="true"></script>
+<script src="site_libs/quarto-dashboard/vfs_fonts.js" kdttablesentinel="true"></script>
+<script src="site_libs/quarto-dashboard/web-components.js" type="module"></script>
+<script src="site_libs/quarto-dashboard/components.js"></script>
+<link href="site_libs/quarto-dashboard/datatables.min.css" rel="stylesheet" kdttablesentinel="true">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body class="quarto-dashboard fullcontent">
+
+<header id="quarto-dashboard-header">
+<nav class="navbar navbar-expand-md slim" data-bs-theme="dark">
+  <div class="navbar-container container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-controls="dashboard-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>    
+
+
+    <div class="navbar-brand-container">       
+    <a href="#"><img src="https://cdn.prod.website-files.com/680ca68e135d0bd278f13a33/6926d739dcff8a824629e2c1_Navbar%20Brand.svg" alt="" class="navbar-logo d-inline-block"></a>
+      <div class="navbar-title">
+        <div class="navbar-title-text"><a href="#">NYC Mayor Approval Tracker</a></div>
+        
+        
+      </div>
+    </div>
+<div id="dashboard-collapse" class="navbar-collapse collapse"><ul class="navbar-nav navbar-nav-scroll me-auto" role="tablist"><li class="nav-item" role="presentation"><a id="tab-tracker" class="nav-link active" data-bs-toggle="tab" role="tab" data-bs-target="#tracker" data-scrolling="true" href="#tracker" aria-controls="tracker" aria-selected="true"><span class="nav-link-text">Tracker</span></a></li><li class="nav-item" role="presentation"><a id="tab-methodology" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#methodology" data-scrolling="true" href="#methodology" aria-controls="methodology" aria-selected="false"><span class="nav-link-text">Methodology</span></a></li></ul></div></div>
+</nav>
+</header>
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-layout-custom quarto-dashboard-content bslib-gap-spacing html-fill-container dashboard-scrolling quarto-dashboard-pages">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+<!-- main -->
+
+<div class="bslib-grid-item html-fill-item tab-content bslib-grid" data-layout="flow" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div id="tracker" class="dashboard-page tab-pane show active html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-tracker">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content) minmax(3em, 1fr) minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-white showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
+<div class="card-body html-fill-item html-fill-container">
+<div data-icon="calendar-check" class="html-fill-item html-fill-container value-box-grid">
+<div class="value-box-showcase html-fill-item html-fill-container">
+
+<i class="bi bi-calendar-check"></i></div>
+<div class="value-box-area">
+<p class="value-box-title">
+Last Updated
+</p>
+<p class="value-box-value">
+Feb 25, 2026
+</p>
+</div>
+</div>
+</div>
+<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-white showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
+<div class="card-body html-fill-item html-fill-container">
+<div data-icon="hand-thumbs-up" class="html-fill-item html-fill-container value-box-grid">
+<div class="value-box-showcase html-fill-item html-fill-container">
+
+<i class="bi bi-hand-thumbs-up"></i></div>
+<div class="value-box-area">
+<p class="value-box-title">
+Approve %
+</p>
+<p class="value-box-value">
+39%
+</p>
+</div>
+</div>
+</div>
+<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-white showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
+<div class="card-body html-fill-item html-fill-container">
+<div data-icon="hand-thumbs-down" class="html-fill-item html-fill-container value-box-grid">
+<div class="value-box-showcase html-fill-item html-fill-container">
+
+<i class="bi bi-hand-thumbs-down"></i></div>
+<div class="value-box-area">
+<p class="value-box-title">
+Disapprove %
+</p>
+<p class="value-box-value">
+26%
+</p>
+</div>
+</div>
+</div>
+<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-white showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
+<div class="card-body html-fill-item html-fill-container">
+<div data-icon="people" class="html-fill-item html-fill-container value-box-grid">
+<div class="value-box-showcase html-fill-item html-fill-container">
+
+<i class="bi bi-people"></i></div>
+<div class="value-box-area">
+<p class="value-box-title">
+Total Sample
+</p>
+<p class="value-box-value">
+n = 1268
+</p>
+</div>
+</div>
+</div>
+<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><script>
+document.addEventListener("DOMContentLoaded", function() {
+  var vals = {
+    "7day": { approve: "39%", disapprove: "26%" },
+    "3day": { approve: "44.1%", disapprove: "23.9%" },
+    "30day": { approve: "38.6%", disapprove: "26.1%" }
+  };
+  var boxes = document.querySelectorAll(".valuebox");
+  var approveBox = null, disapproveBox = null;
+  boxes.forEach(function(box) {
+    var title = box.querySelector(".value-box-title");
+    if (title) {
+      if (title.textContent.trim() === "Approve %") approveBox = box;
+      if (title.textContent.trim() === "Disapprove %") disapproveBox = box;
+    }
+  });
+  document.querySelectorAll(".nav-link").forEach(function(tab) {
+    tab.addEventListener("click", function() {
+      var v = this.getAttribute("data-value") || this.textContent.trim();
+      var key = null;
+      if (v.indexOf("7-day") !== -1) key = "7day";
+      else if (v.indexOf("3-day") !== -1) key = "3day";
+      else if (v.indexOf("30-day") !== -1) key = "30day";
+      if (key && vals[key]) {
+        if (approveBox) approveBox.querySelector(".value-box-value").textContent = vals[key].approve;
+        if (disapproveBox) disapproveBox.querySelector(".value-box-value").textContent = vals[key].disapprove;
+      }
+    });
+  });
+});
+</script>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card tabset html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-header dashboard-card-no-title bslib-navs-card-title">
+
+<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-5"><li class="nav-item" role="presentation"><a href="#card-tabset-5-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Stable (7-day)" aria-selected="true" class="nav-link active">Stable (7-day)</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-5-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Latest (3-day)" aria-selected="false" class="nav-link">Latest (3-day)</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-5-3" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Extended (30-day)" aria-selected="false" class="nav-link">Extended (30-day)</a></li></ul></div>
+
+
+
+<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-5"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-5-1"><div class="card-body html-fill-item html-fill-container" data-title="Stable (7-day)">
+<div class="cell-output-display html-fill-item html-fill-container">
+<div class="plotly html-widget html-fill-item html-fill-container" id="htmlwidget-13ea8d27823635c13aa2" style="width:100%;height:406px;"></div>
+<script type="application/json" data-for="htmlwidget-13ea8d27823635c13aa2">{"x":{"visdat":{"1394519eb56a1":["function () ","plotlyVisDat"],"1394529847152":["function () ","data"],"13945362bd3c9":["function () ","data"],"13945775d4ce7":["function () ","data"],"13945e640eea":["function () ","data"]},"cur_data":"13945e640eea","attrs":{"1394529847152":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(121, 231, 222, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"13945362bd3c9":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7},"name":"Approve %","hovertemplate":"<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true},"13945775d4ce7":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(227, 98, 120, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"13945e640eea":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7},"name":"Disapprove %","hovertemplate":"<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":60,"r":40},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickformat":"%b %d","dtick":86400000,"range":["2026-02-02","2026-02-28"],"gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"yaxis":{"domain":[0,1],"automargin":true,"title":"","ticksuffix":"%","rangemode":"tozero","gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"legend":{"orientation":"h","x":0.5,"xanchor":"center","y":1.05,"yanchor":"bottom"},"hovermode":"x unified","paper_bgcolor":"white","plot_bgcolor":"white","font":{"family":"Mulish, sans-serif"},"showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":true,"modeBarButtonsToRemove":["zoom2d","pan2d","select2d","lasso2d","zoomIn2d","zoomOut2d","autoScale2d","resetScale2d","hoverClosestCartesian","hoverCompareCartesian"],"displaylogo":false,"scrollZoom":false},"data":[{"fillcolor":"rgba(121, 231, 222, 0.2)","x":["2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-25","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-06","2026-02-05","2026-02-04","2026-02-03"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[31.499679457054313,29.628377380554149,25.958108276295,25.094333928869929,26.130658407590072,26.271985972098012,26.221721017115286,29.224203225178762,29.400340900322604,32.095865424352361,33.926955025330507,32.629630455446389,30.702724825172762,31.261527278152379,29.012840242003278,29.012840242003278,49.034276214078062,50.80409588791899,49.960740925760874,52.640559156888443,53.130127989733289,50.473559438690565,47.247818161779861,48.248350717796498,44.707069866922758,44.099194255517418,42.990772196987841,41.427494145412602,40.669838130651428,44.709181444353774,45.068261319698891],"name":"rgba(121, 231, 222, 0.2)","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25"],"y":[38.283970388376602,37.168779412453965,33.313973203473211,33.260914037141262,34.560715302288955,35.185590113807713,35.464395442019018,38.736276971487634,38.324079531051233,41.284712431521456,43.528541507531898,42.635094806167416,40.33173287546682,41.032811583035681,39.02355822804067],"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7,"line":{"color":"rgba(255,127,14,1)"}},"name":"Approve %","hovertemplate":["<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(227, 98, 120, 0.2)","x":["2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-25","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-06","2026-02-05","2026-02-04","2026-02-03"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[19.678843348240814,19.670537868156774,18.926695856623827,19.950111899383085,22.055275197418485,22.760303729357794,23.38789140944899,22.301728616916392,22.557535667903299,18.686108894619263,20.215934351646013,18.557677185390332,16.194810750251108,18.709365449232447,17.286297618907597,17.286297618907597,34.666663797028605,35.408818696570592,31.96182607220025,35.85883390871799,37.452944705992486,34.78898419462341,40.817712482829833,41.980727398446149,43.017124772087591,41.693976359702148,39.961625041591212,36.855954264099189,34.25775860090355,35.444346102674295,33.682025015826412],"name":"rgba(227, 98, 120, 0.2)","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25"],"y":[26.680434182033615,27.557441985415537,26.592227228763686,28.403033081741135,31.00845011950485,32.227140044529975,33.202508090768291,32.141228007681271,31.687624075366568,26.737546544621338,28.834439528819249,27.208255547054161,24.078318411225681,27.059092072901521,25.976480707968104],"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7,"line":{"color":"rgba(214,39,40,1)"}},"name":"Disapprove %","hovertemplate":["<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-5-2"><div class="card-body html-fill-item html-fill-container" data-title="Latest (3-day)">
+<div class="cell-output-display html-fill-item html-fill-container">
+<div class="plotly html-widget html-fill-item html-fill-container" id="htmlwidget-da1dfd81d7f8ea760aa0" style="width:100%;height:406px;"></div>
+<script type="application/json" data-for="htmlwidget-da1dfd81d7f8ea760aa0">{"x":{"visdat":{"1394560fb8e05":["function () ","plotlyVisDat"],"1394523291c01":["function () ","data"],"139455fed97af":["function () ","data"],"139456781935c":["function () ","data"],"139456bf1b21a":["function () ","data"]},"cur_data":"139456bf1b21a","attrs":{"1394523291c01":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(121, 231, 222, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"139455fed97af":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7},"name":"Approve %","hovertemplate":"<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true},"139456781935c":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(227, 98, 120, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"139456bf1b21a":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7},"name":"Disapprove %","hovertemplate":"<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":60,"r":40},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickformat":"%b %d","dtick":86400000,"range":["2026-01-29","2026-02-28"],"gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"yaxis":{"domain":[0,1],"automargin":true,"title":"","ticksuffix":"%","rangemode":"tozero","gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"legend":{"orientation":"h","x":0.5,"xanchor":"center","y":1.05,"yanchor":"bottom"},"hovermode":"x unified","paper_bgcolor":"white","plot_bgcolor":"white","font":{"family":"Mulish, sans-serif"},"showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":true,"modeBarButtonsToRemove":["zoom2d","pan2d","select2d","lasso2d","zoomIn2d","zoomOut2d","autoScale2d","resetScale2d","hoverClosestCartesian","hoverCompareCartesian"],"displaylogo":false,"scrollZoom":false},"data":[{"fillcolor":"rgba(121, 231, 222, 0.2)","x":["2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-25","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-14","2026-02-13","2026-02-12","2026-02-11","2026-02-06","2026-02-05","2026-02-04","2026-02-03","2026-02-02","2026-02-01","2026-01-31","2026-01-30"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[34.849562535351147,33.053525276467539,26.971983930751254,23.838203585477288,23.752905112703605,22.688147766043809,25.280585697666979,18.702430641486874,25.678941843622631,28.470996579821584,31.958573861475294,28.431440072600545,26.564803155468574,21.954456455257439,18.011593453383036,29.622076909302297,30.096540089948963,29.953998731767197,29.894411173995461,27.988465919178868,20.75464118597208,29.130349896999832,27.086649299258497,27.086649299258497,61.124149608141586,59.091115449161016,49.444163966298085,56.507494562376358,57.888987169814889,57.274872215952264,60.695610073407067,64.622988311120594,41.952937518738629,49.790038552144267,52.12007575632596,57.502224545833855,61.575621449131056,58.057316036162796,53.446043512887442,48.569125771800167,50.48570966523134,44.55432613967524,46.903670716278654,47.084968896536047,51.762381397235167,56.689660787338148,53.922833016685878],"name":"rgba(121, 231, 222, 0.2)","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25"],"y":[44.386197776018513,44.871593031902847,39.367182663993212,35.461586241006671,35.328287914491128,33.621236952859526,37.883147681449159,33.635778206643522,39.56249267825504,43.264156307992188,46.767097655303175,42.966832309217203,39.342439455897264,35.872247503700855,29.982265486060832,47.122532610211444,45.396075081678013,43.614435473859729,43.891699171905174,42.247980240777615,35.099402576135077,44.11073267308042,44.105399453700045],"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7,"line":{"color":"rgba(255,127,14,1)"}},"name":"Approve %","hovertemplate":["<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(227, 98, 120, 0.2)","x":["2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-25","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-14","2026-02-13","2026-02-12","2026-02-11","2026-02-06","2026-02-05","2026-02-04","2026-02-03","2026-02-02","2026-02-01","2026-01-31","2026-01-30"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[10.680142173137931,11.953756593835468,12.896346662157686,18.525900713107564,20.657530235476969,15.456612493451638,13.697155977790715,7.4707384437684281,15.70836449525998,11.565168902546901,18.309693088695902,13.33326555647967,20.297344700069697,19.578554954517262,16.996998433610568,12.695760505558843,10.187993231959535,15.238034145680773,16.724716367613592,16.985814367065057,13.71998750985435,14.08434789894277,7.9932677908288872,7.9932677908288872,39.737892294077618,40.832172537058611,41.448857101408763,45.103315345004134,41.861177498986038,38.877440322372905,33.1387616006689,42.964082402464932,46.176945791351287,51.926150439632288,47.581127826708006,40.456844399183254,46.443662296300026,37.698787057846133,41.679836893009174,30.765042830298562,35.68505696794071,37.88187983773885,45.700277849668517,43.127938700061414,35.680146792713835,31.364407783047266,26.277106185771693],"name":"rgba(227, 98, 120, 0.2)","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25"],"y":[18.478624179454812,21.659082188441367,24.288246727435762,30.826919706584487,33.178904042572746,26.669246165595244,24.691106472865712,19.117890637033494,28.694100694134576,24.631977980196517,32.376677692497964,26.89505497783146,33.93923626338885,35.752352697074777,31.586972112480925,27.829921454011885,21.663377416314216,27.057737234026842,29.292946933299813,31.044564856034597,27.584422305631556,27.458260218000692,23.865580042453249],"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7,"line":{"color":"rgba(214,39,40,1)"}},"name":"Disapprove %","hovertemplate":["<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-5-3"><div class="card-body html-fill-item html-fill-container" data-title="Extended (30-day)">
+<div style="padding: 1.5rem;" class="html-fill-item html-fill-container">
+<p style="font-size: 1rem; color: #6B7280; margin-bottom: 1.5rem;">
+Feb 25, 2026 — based on 27 days of data
+</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.2rem; margin-bottom: 1.5rem;" class="html-fill-item html-fill-container">
+<div style="background: #F0FDFA; border-radius: 12px; padding: 1.2rem; text-align: center; border: 1px solid #79E7DE;" class="html-fill-item html-fill-container">
+<div style="font-size: 0.85rem; color: #6B7280; margin-bottom: 0.3rem;" class="html-fill-item html-fill-container">
+Approve %
+</div>
+<div style="font-size: 2rem; font-weight: 700; color: #0F766E;" class="html-fill-item html-fill-container">
+38.6%
+</div>
+<div style="font-size: 0.8rem; color: #6B7280;" class="html-fill-item html-fill-container">
+34.3% – 42.9%
+</div>
+</div>
+<div style="background: #FFF1F2; border-radius: 12px; padding: 1.2rem; text-align: center; border: 1px solid #E36278;" class="html-fill-item html-fill-container">
+<div style="font-size: 0.85rem; color: #6B7280; margin-bottom: 0.3rem;" class="html-fill-item html-fill-container">
+Disapprove %
+</div>
+<div style="font-size: 2rem; font-weight: 700; color: #BE123C;" class="html-fill-item html-fill-container">
+26.1%
+</div>
+<div style="font-size: 0.8rem; color: #6B7280;" class="html-fill-item html-fill-container">
+22.1% – 30.2%
+</div>
+</div>
+<div style="background: #EEF2FF; border-radius: 12px; padding: 1.2rem; text-align: center; border: 1px solid #3A42B9;" class="html-fill-item html-fill-container">
+<div style="font-size: 0.85rem; color: #6B7280; margin-bottom: 0.3rem;" class="html-fill-item html-fill-container">
+Net Approval
+</div>
+<div style="font-size: 2rem; font-weight: 700; color: #3A42B9;" class="html-fill-item html-fill-container">
++12.5pp
+</div>
+</div>
+<div style="background: #F9FAFB; border-radius: 12px; padding: 1.2rem; text-align: center; border: 1px solid #D1D5DB;" class="html-fill-item html-fill-container">
+<div style="font-size: 0.85rem; color: #6B7280; margin-bottom: 0.3rem;" class="html-fill-item html-fill-container">
+Don’t Know %
+</div>
+<div style="font-size: 2rem; font-weight: 700; color: #6B7280;" class="html-fill-item html-fill-container">
+35.3%
+</div>
+</div>
+<div style="background: #F9FAFB; border-radius: 12px; padding: 1.2rem; text-align: center; border: 1px solid #D1D5DB;" class="html-fill-item html-fill-container">
+<div style="font-size: 0.85rem; color: #6B7280; margin-bottom: 0.3rem;" class="html-fill-item html-fill-container">
+Sample Size
+</div>
+<div style="font-size: 2rem; font-weight: 700; color: #374151;" class="html-fill-item html-fill-container">
+n = 1,268
+</div>
+</div>
+<div style="background: #F9FAFB; border-radius: 12px; padding: 1.2rem; text-align: center; border: 1px solid #D1D5DB;" class="html-fill-item html-fill-container">
+<div style="font-size: 0.85rem; color: #6B7280; margin-bottom: 0.3rem;" class="html-fill-item html-fill-container">
+Days of Data
+</div>
+<div style="font-size: 2rem; font-weight: 700; color: #374151;" class="html-fill-item html-fill-container">
+27
+</div>
+</div>
+</div>
+<p style="font-size: 0.85rem; color: #9CA3AF; font-style: italic;">
+This estimate uses a 30-day rolling window with Standard weighting. It provides the most stable estimate but is less responsive to recent shifts.
+</p>
+</div>
+</div></div></div><bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="h4">
+About
+</div>
+<p>This tracker displays weighted estimates of NYC mayoral approval (Mamdani) based on daily online survey data collected by <a href="https://www.niradata.com">Nira Data</a>.</p>
+<p><span style="color: #79E7DE;"><strong>Approve %</strong></span> and <span style="color: #E36278;"><strong>Disapprove %</strong></span> use total respondents as denominator (including “Don’t know”). Error bars / shaded ribbons show 95% confidence intervals.</p>
+<p>The <strong>Latest (3-day)</strong> tab uses a rolling 3-day window; the <strong>Stable (7-day)</strong> tab appears once 7+ days of data are collected. The <strong>Extended (30-day)</strong> tab provides the most stable estimate using a wider rolling window (requires 10+ distinct days of data).</p>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+</div>
+<div id="methodology" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-methodology">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="h4">
+Overview
+</div>
+<p>This tracker displays weighted estimates of NYC mayoral approval based on daily online survey data. All three estimates are weighted to match NYC adult population demographics using iterative proportional fitting (raking). Confidence intervals are 95%. Approval is reported using the Gallup convention: “Don’t know” responses are included in the denominator, so Approve% + Disapprove% + DK% = 100%.</p>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 24%">
+<col style="width: 25%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Estimate</th>
+<th>Rolling Window</th>
+<th>Weighting Tier</th>
+<th>Min. Sample Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Latest (3-day)</td>
+<td>3 days</td>
+<td>Lite</td>
+<td>50 respondents, 3 distinct days</td>
+</tr>
+<tr class="even">
+<td>Stable (7-day)</td>
+<td>7 days</td>
+<td>Standard</td>
+<td>100 respondents, 7 distinct days</td>
+</tr>
+<tr class="odd">
+<td>Extended (30-day)</td>
+<td>30 days</td>
+<td>Standard</td>
+<td>100 respondents, 10 distinct days</td>
+</tr>
+</tbody>
+</table>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 60%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Approve %</td>
+<td>Share of all respondents who approve (DK included in denominator)</td>
+</tr>
+<tr class="even">
+<td>Disapprove %</td>
+<td>Share of all respondents who disapprove (DK included in denominator)</td>
+</tr>
+<tr class="odd">
+<td>Confidence interval</td>
+<td>95% CI derived from survey design-based standard errors</td>
+</tr>
+<tr class="even">
+<td>Convention</td>
+<td>Gallup-style: Approve% + Disapprove% + DK% = 100%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<p>The Latest estimate uses <strong>Lite Weighting</strong> with fewer categories to accommodate smaller sample sizes:</p>
+<ul>
+<li>Age (3 categories: 18-34, 35-54, 55+)</li>
+<li>Gender (2 categories: Male, Female)</li>
+<li>Borough (5 categories)</li>
+<li>Race/Ethnicity (4 categories: White, Black, Hispanic, Asian/Other)</li>
+<li>2025 Mayoral Vote (4 categories: Mamdani, Cuomo, Other candidate, No vote)</li>
+</ul>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<p>The Stable and Extended estimates use <strong>Standard Weighting</strong> with the following variables:</p>
+<ul>
+<li>Age × Gender (joint distribution, 12 cells)</li>
+<li>Borough (5 categories: Manhattan, Brooklyn, Queens, Bronx, Staten Island)</li>
+<li>Race/Ethnicity (4 categories: White, Black, Hispanic, Asian/Other)</li>
+<li>Education (4 categories: HS or less, Some college, Bachelor’s, Graduate+)</li>
+<li>2025 Mayoral Vote (4 categories: Mamdani, Cuomo, Other candidate, No vote)</li>
+<li>Vote × Borough (joint, 20 cells — when sample size permits)</li>
+</ul>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="h4">
+Additional
+
+Notes
+</div>
+<ul>
+<li><strong>Population targets</strong> are derived from the American Community Survey (ACS) 2023 5-year estimates and official NYC Board of Elections results.</li>
+<li><strong>Weight trimming</strong> is applied to prevent any single respondent from having excessive influence (weights capped at 6× the mean).</li>
+<li><strong>Weight normalization</strong>: weights are normalized to mean = 1.</li>
+<li><strong>Design effect</strong> measures the loss of precision due to weighting; values typically range from 1.2 to 3.0.</li>
+<li><strong>Data collection</strong> is conducted daily via online panel by <a href="https://www.niradata.com">Nira Data</a>.</li>
+</ul>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div id="3ade8a4a-fb1d-4a6c-8409-ac45482d5fc9" class="hidden html-fill-item html-fill-container">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (_event) {
+  if (window.bslib.Card) {
+    window.bslib.Card.initializeAllCards();
+  }
+}); 
+</script>
+  
+
+
+
+</body></html>
