@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>NYC Mayor Approval Tracker</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-dashboard/quarto-dashboard.js"></script>
+<script src="site_libs/quarto-dashboard/stickythead.js"></script>
+<script src="site_libs/quarto-dashboard/datatables.min.js" kdttablesentinel="true"></script>
+<script src="site_libs/quarto-dashboard/pdfmake.min.js" kdttablesentinel="true"></script>
+<script src="site_libs/quarto-dashboard/vfs_fonts.js" kdttablesentinel="true"></script>
+<script src="site_libs/quarto-dashboard/web-components.js" type="module"></script>
+<script src="site_libs/quarto-dashboard/components.js"></script>
+<link href="site_libs/quarto-dashboard/datatables.min.css" rel="stylesheet" kdttablesentinel="true">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body class="quarto-dashboard fullcontent">
+
+<header id="quarto-dashboard-header">
+<nav class="navbar navbar-expand-md slim" data-bs-theme="dark">
+  <div class="navbar-container container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-controls="dashboard-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>    
+
+
+    <div class="navbar-brand-container">       
+    <a href="#"><img src="https://cdn.prod.website-files.com/680ca68e135d0bd278f13a33/6926d739dcff8a824629e2c1_Navbar%20Brand.svg" alt="" class="navbar-logo d-inline-block"></a>
+      <div class="navbar-title">
+        <div class="navbar-title-text"><a href="#">NYC Mayor Approval Tracker</a></div>
+        
+        
+      </div>
+    </div>
+<div id="dashboard-collapse" class="navbar-collapse collapse"><ul class="navbar-nav navbar-nav-scroll me-auto" role="tablist"><li class="nav-item" role="presentation"><a id="tab-tracker" class="nav-link active" data-bs-toggle="tab" role="tab" data-bs-target="#tracker" data-scrolling="true" href="#tracker" aria-controls="tracker" aria-selected="true"><span class="nav-link-text">Tracker</span></a></li><li class="nav-item" role="presentation"><a id="tab-methodology" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#methodology" data-scrolling="true" href="#methodology" aria-controls="methodology" aria-selected="false"><span class="nav-link-text">Methodology</span></a></li></ul></div></div>
+</nav>
+</header>
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-layout-custom quarto-dashboard-content bslib-gap-spacing html-fill-container dashboard-scrolling quarto-dashboard-pages">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+<!-- main -->
+
+<div class="bslib-grid-item html-fill-item tab-content bslib-grid" data-layout="flow" style="display: grid; grid-template-rows: minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div id="tracker" class="dashboard-page tab-pane show active html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-tracker">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content) minmax(3em, 1fr) minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-white showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
+<div class="card-body html-fill-item html-fill-container">
+<div data-icon="calendar-check" class="html-fill-item html-fill-container value-box-grid">
+<div class="value-box-showcase html-fill-item html-fill-container">
+
+<i class="bi bi-calendar-check"></i></div>
+<div class="value-box-area">
+<p class="value-box-title">
+Last Updated
+</p>
+<p class="value-box-value">
+Apr 19, 2026
+</p>
+</div>
+</div>
+</div>
+<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-white showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
+<div class="card-body html-fill-item html-fill-container">
+<div data-icon="hand-thumbs-up" class="html-fill-item html-fill-container value-box-grid">
+<div class="value-box-showcase html-fill-item html-fill-container">
+
+<i class="bi bi-hand-thumbs-up"></i></div>
+<div class="value-box-area">
+<p class="value-box-title">
+Approve %
+</p>
+<p class="value-box-value">
+34.6%
+</p>
+</div>
+</div>
+</div>
+<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-white showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
+<div class="card-body html-fill-item html-fill-container">
+<div data-icon="hand-thumbs-down" class="html-fill-item html-fill-container value-box-grid">
+<div class="value-box-showcase html-fill-item html-fill-container">
+
+<i class="bi bi-hand-thumbs-down"></i></div>
+<div class="value-box-area">
+<p class="value-box-title">
+Disapprove %
+</p>
+<p class="value-box-value">
+29%
+</p>
+</div>
+</div>
+</div>
+<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div class="card valuebox cell html-fill-item html-fill-container bslib-card bslib-value-box bg-white showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()">
+<div class="card-body html-fill-item html-fill-container">
+<div data-icon="people" class="html-fill-item html-fill-container value-box-grid">
+<div class="value-box-showcase html-fill-item html-fill-container">
+
+<i class="bi bi-people"></i></div>
+<div class="value-box-area">
+<p class="value-box-title">
+Cumulative Sample
+</p>
+<p class="value-box-value">
+n = 3362
+</p>
+</div>
+</div>
+</div>
+<script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><script>
+document.addEventListener("DOMContentLoaded", function() {
+  var vals = {
+    "7day": { approve: "36.7%", disapprove: "34.9%" },
+    "3day": { approve: "40.2%", disapprove: "20.4%" },
+    "30day": { approve: "34.6%", disapprove: "29%" }
+  };
+  var boxes = document.querySelectorAll(".valuebox");
+  var approveBox = null, disapproveBox = null;
+  boxes.forEach(function(box) {
+    var title = box.querySelector(".value-box-title");
+    if (title) {
+      if (title.textContent.trim() === "Approve %") approveBox = box;
+      if (title.textContent.trim() === "Disapprove %") disapproveBox = box;
+    }
+  });
+  document.querySelectorAll(".nav-link").forEach(function(tab) {
+    tab.addEventListener("click", function() {
+      var v = this.getAttribute("data-value") || this.textContent.trim();
+      var key = null;
+      if (v.indexOf("7-day") !== -1) key = "7day";
+      else if (v.indexOf("3-day") !== -1) key = "3day";
+      else if (v.indexOf("30-day") !== -1) key = "30day";
+      if (key && vals[key]) {
+        if (approveBox) approveBox.querySelector(".value-box-value").textContent = vals[key].approve;
+        if (disapproveBox) disapproveBox.querySelector(".value-box-value").textContent = vals[key].disapprove;
+      }
+    });
+  });
+});
+</script>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card tabset html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-header dashboard-card-no-title bslib-navs-card-title">
+
+<ul class="nav nav-tabs card-header-tabs" role="tablist" data-tabsetid="card-tabset-5"><li class="nav-item" role="presentation"><a href="#card-tabset-5-1" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Extended (30-day)" aria-selected="true" class="nav-link active">Extended (30-day)</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-5-2" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Stable (7-day)" aria-selected="false" class="nav-link">Stable (7-day)</a></li><li class="nav-item" role="presentation"><a href="#card-tabset-5-3" role="tab" data-toggle="tab" data-bs-toggle="tab" data-value="Latest (3-day)" aria-selected="false" class="nav-link">Latest (3-day)</a></li></ul></div>
+
+
+
+<div class="tab-content html-fill-item html-fill-container" data-tabset-id="card-tabset-5"><div class="tab-pane active show html-fill-item html-fill-container" role="tabpanel" id="card-tabset-5-1"><div class="card-body html-fill-item html-fill-container" data-title="Extended (30-day)">
+<div class="cell-output-display html-fill-item html-fill-container">
+<div class="plotly html-widget html-fill-item html-fill-container" id="htmlwidget-7970335b228d8d5bc0af" style="width:100%;height:406px;"></div>
+<script type="application/json" data-for="htmlwidget-7970335b228d8d5bc0af">{"x":{"visdat":{"4a8a2de422c2":["function () ","plotlyVisDat"],"4a8a5ca60617":["function () ","data"],"4a8a17d9ff86":["function () ","data"],"4a8a6916c2a5":["function () ","data"],"4a8a55451489":["function () ","data"]},"cur_data":"4a8a55451489","attrs":{"4a8a5ca60617":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(121, 231, 222, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"4a8a17d9ff86":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7},"name":"Approve %","hovertemplate":"<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true},"4a8a6916c2a5":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(227, 98, 120, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"4a8a55451489":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7},"name":"Disapprove %","hovertemplate":"<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":60,"r":40},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickformat":"%b %d","dtick":86400000,"range":["2026-02-05","2026-04-22"],"gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"yaxis":{"domain":[0,1],"automargin":true,"title":"","ticksuffix":"%","rangemode":"tozero","gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"legend":{"orientation":"h","x":0.5,"xanchor":"center","y":1.05,"yanchor":"bottom"},"hovermode":"x unified","paper_bgcolor":"white","plot_bgcolor":"white","font":{"family":"Mulish, sans-serif"},"showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":true,"modeBarButtonsToRemove":["zoom2d","pan2d","select2d","lasso2d","zoomIn2d","zoomOut2d","autoScale2d","resetScale2d","hoverClosestCartesian","hoverCompareCartesian"],"displaylogo":false,"scrollZoom":false},"data":[{"fillcolor":"rgba(121, 231, 222, 0.2)","x":["2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-19","2026-04-19","2026-04-18","2026-04-17","2026-04-16","2026-04-15","2026-04-14","2026-04-13","2026-04-12","2026-04-11","2026-04-10","2026-04-09","2026-04-08","2026-04-07","2026-04-06","2026-04-05","2026-04-04","2026-04-03","2026-04-02","2026-04-01","2026-03-31","2026-03-30","2026-03-29","2026-03-28","2026-03-27","2026-03-26","2026-03-25","2026-03-24","2026-03-23","2026-03-22","2026-03-21","2026-03-20","2026-03-19","2026-03-18","2026-03-17","2026-03-16","2026-03-15","2026-03-14","2026-03-13","2026-03-12","2026-03-11","2026-03-10","2026-03-09","2026-03-08","2026-03-07","2026-03-06","2026-03-05","2026-03-04","2026-03-03","2026-03-02","2026-03-01","2026-02-28","2026-02-27","2026-02-26","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-14","2026-02-13","2026-02-12","2026-02-11","2026-02-10","2026-02-09","2026-02-08","2026-02-07","2026-02-06"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[30.928456165395612,30.928456165395612,30.928456165395612,31.105878505606981,32.109172294723798,31.584156101985901,31.779452037974607,31.141837329946924,31.004148655073905,31.285646864709086,31.535513614061383,32.210516521843367,32.571748565928452,32.513757729268477,32.887147067698038,33.44961808888948,33.732866611922887,33.722351398796924,34.216671242911154,34.275463365850619,34.584426054683149,33.580837346202415,32.700966064596471,32.893161419971577,32.276974468753757,32.877071604148306,32.740658669972014,32.999767492946702,32.21380095433409,32.722444151601259,33.059319869230343,33.554896500385034,33.035030446043969,33.199527494793635,32.629397200203414,32.549416343437784,32.346104725817824,32.245440253972916,31.878845839255852,32.515704170542833,32.174637599475659,32.034290907949767,31.798447533061381,31.454187230883278,30.571488872116003,30.245014385245657,29.578673576524817,29.823868661510712,29.22116714810916,28.553086954251761,27.611026002970846,28.571305336399799,29.104392718933138,29.354341407841151,28.8200625659086,28.689820336430156,29.047321646516711,29.732187449115788,29.738253320115376,29.445697595097513,29.896568798055117,30.615891582072496,31.07990528217362,30.21128332786208,30.265354584032355,30.24908425199947,30.202290050766027,30.140026783052576,30.221620601141847,29.295909263320858,30.07602434822282,30.315648513855859,30.468591248144151,30.468591248144151,38.725926570212444,38.415431409584251,38.276251614133393,37.492244992022414,38.716252173321713,38.603201692973741,38.730646141358314,39.012006701660006,39.056627549101997,39.007956445827716,40.076017091626461,39.607285524849765,38.882976242243977,38.531151752440365,38.874423414064971,38.811051717706924,37.899524436602363,37.520341468736781,37.839539816657641,38.418480328262724,38.195777779638775,37.674514685965399,36.50067372957438,37.39794718511196,38.082616604607097,38.804255208713336,38.50911992206786,39.240905156034074,39.719253085665464,40.567550261802957,40.781440616348817,41.123447456815057,41.068297224414245,41.421564044852076,40.454346941108319,40.884087709118653,40.945487447815324,41.146097457793473,41.111274590097139,41.696735692838928,41.433456063527565,42.114315840851802,41.704268982755899,41.419815303262887,40.871177778170221,41.713204034606292,41.411844110725461,41.367272773290573,40.773956367037314,41.431480973407623,41.218709607249423,42.135571662782752,42.878214584643459,42.754745641867274,42.794066245044107,42.352442684040938,42.53438524956897,42.392312306445149,41.873203799013872,41.67326433645745,41.931907478044849,41.715327676972933,41.180235361970418,40.991947820975568,41.169988396438526,41.627058098645968,42.637139803791612,42.699690124018822,43.716308345372525,42.806519000537833,43.123454723318289,43.123454723318289,43.123454723318289],"name":"rgba(121, 231, 222, 0.2)","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19"],"y":[37.025955444356953,37.025955444356953,37.025955444356953,36.956198753072407,37.912740320048158,37.141923113002363,37.20829592088311,36.384447714296449,36.087068525756216,36.138797342842324,36.357874488015902,36.962922099408154,37.251828021986647,37.093511032862963,37.380175433355959,37.920965197667314,38.133625930745929,38.037397041418927,38.505368743977627,38.51510450385895,38.731320319663304,37.858204504492583,36.959837835922947,37.162321196689604,36.525465417895539,37.122172188719439,37.076251390348737,37.356485763776497,36.542489366252155,37.071129727432073,37.381794425993121,37.834606170618414,37.234243254785767,37.448131593816278,36.870335895150276,36.847756900615629,36.645796086816574,36.564763981545781,36.166596390182086,36.968634107697454,36.621467411944955,36.578869182382412,36.289944074705097,36.010868746343114,35.145370978890732,34.742959770639864,34.043896749296337,34.314061935112022,33.651891876358128,32.975517069681857,32.055849866272609,33.122910011182597,33.650085249285958,33.886410868051939,33.329801191283117,33.105080902583467,33.473423041559535,34.271619583411358,34.30633836709017,33.988424673768939,34.389772520149549,35.111588553461132,35.577961186900041,34.609619886844897,34.660991066567178,34.630545476829738,34.466468096062172,34.371614238013159,34.468936387231778,33.394077127671636,34.176137981178108,34.365539961720053,34.597258909178294],"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7,"line":{"color":"rgba(255,127,14,1)"}},"name":"Approve %","hovertemplate":["<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(227, 98, 120, 0.2)","x":["2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-19","2026-04-19","2026-04-18","2026-04-17","2026-04-16","2026-04-15","2026-04-14","2026-04-13","2026-04-12","2026-04-11","2026-04-10","2026-04-09","2026-04-08","2026-04-07","2026-04-06","2026-04-05","2026-04-04","2026-04-03","2026-04-02","2026-04-01","2026-03-31","2026-03-30","2026-03-29","2026-03-28","2026-03-27","2026-03-26","2026-03-25","2026-03-24","2026-03-23","2026-03-22","2026-03-21","2026-03-20","2026-03-19","2026-03-18","2026-03-17","2026-03-16","2026-03-15","2026-03-14","2026-03-13","2026-03-12","2026-03-11","2026-03-10","2026-03-09","2026-03-08","2026-03-07","2026-03-06","2026-03-05","2026-03-04","2026-03-03","2026-03-02","2026-03-01","2026-02-28","2026-02-27","2026-02-26","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-14","2026-02-13","2026-02-12","2026-02-11","2026-02-10","2026-02-09","2026-02-08","2026-02-07","2026-02-06"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[19.129354576007586,19.129354576007586,19.129354576007586,19.673088110681697,19.171896969272879,19.885090305563011,19.760153672807334,21.454987673688471,21.557689949113001,21.828674995057145,22.157183650809326,22.050549875206109,22.444225019252968,22.776405916913426,22.48163030002824,22.542345981979746,22.130034169220156,21.970040976475509,22.288504269021185,21.790080922613754,21.194942088504494,22.531451521761984,22.613543356315578,23.016784139347163,23.957213584657094,23.651130429396101,24.210714148286819,24.08544624559692,24.948211843481367,24.977063844670798,25.251038295099203,25.094056371972517,25.317263774092119,25.337607540526321,26.088855040385933,25.989317157194762,26.757902051218529,25.453835659274539,25.713293899628063,25.47743782364072,25.336733613864009,25.522073807317263,25.955518136001114,25.997040592855374,25.287222756862427,25.45467315688817,25.312831783428756,25.399702896622479,25.192252204577809,25.729036977170811,26.542223300815571,25.134369972617872,25.978179593067956,26.539762868288037,25.97789556093484,26.088785837391526,25.744510464998655,25.197949236145245,25.47773180093581,25.245730985385421,24.887450765344791,25.056926232558563,24.984945007439734,25.288822338104083,24.722629858733335,24.525104130148893,25.002866004082435,25.82618131151521,26.204308083091611,26.602264758055238,25.814543227224934,25.686047204558278,24.938973380864908,24.938973380864908,32.961578477584709,33.639244416469388,33.92921000914793,34.856946100353724,34.474791952555606,34.01062475599182,33.161756834652444,32.814721976401309,33.057627927281395,33.843047207687746,33.640482331784597,33.645640117108414,33.514366669288634,34.028237005775061,34.288907550990466,33.884406733930724,34.520044866642898,34.89310864102373,34.823908921700252,35.570122995934447,34.933007829356647,33.972350318490435,35.533752297522945,34.565866345799229,33.915338917712994,34.138724571583268,34.010013154301156,34.097140625410098,33.994938342772826,34.733729184689963,34.522986406675464,34.086548131081955,33.764358283248036,33.894156706215369,34.029763334682116,33.765949658630547,35.25285993988593,34.348365278659983,34.36124663611421,33.467770591958114,33.352955757309182,33.25373176843646,33.589453233605063,33.406842995018224,33.339149880601688,32.31776141362581,32.459513329402711,31.665874563778669,32.180615038893492,31.128424293766084,30.698510126410138,30.685030256934354,28.849682479725818,29.783338163118167,30.474439377439978,30.275586263132109,30.689881809811098,31.467103916979095,31.590890271532807,32.156792672350946,32.031253281010194,31.825721866242386,32.172204510137696,31.961413661870846,32.118538229514762,32.24816363228453,30.37689228258369,30.805735112737803,30.443426785225501,31.476198574972919,31.39600397985507,31.39600397985507,31.39600397985507],"name":"rgba(227, 98, 120, 0.2)","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19"],"y":[25.262679277931326,25.262679277931326,25.262679277931326,25.574643342827308,24.807661877249192,25.345412709150406,25.068522977695512,26.851575652986504,26.83811408931388,26.895044328463996,27.164694080473513,26.938135870724246,27.237739150131578,27.466599294632182,27.036260285780521,27.004724949479421,26.409957989515625,26.122813619803807,26.38147182323058,25.78670954286596,25.022312284115156,26.608240889348167,26.656026741362858,27.072604216556623,28.068914311775295,27.658502496587385,28.335113738844765,28.201603829611365,29.143680862041528,29.191953419844513,29.420245764352131,29.173894070204486,29.335109765700651,29.402689066242218,30.225050838250073,30.168841217927373,31.00538099555223,29.609892658952543,29.871528617155089,29.685797264928045,29.550545948556024,29.804310969199609,30.239252271338291,30.365384888772667,29.641080549817627,29.775906891149134,29.661422468864956,29.769213734102873,29.553795561145403,30.147451661485018,31.037987799169258,29.553360145554151,30.455593711212302,31.054942932111238,30.400902241317546,30.490947239207628,30.132277665820776,29.541177985037987,29.883319675963136,29.636983995580241,29.200908717316707,29.351283174833487,29.312713669612162,29.565934772895915,28.890128893007365,28.669913053275103,29.082311419367439,29.918403033753517,30.339550017823608,30.729605429204483,29.871876618186434,29.662645810513833,28.950275929224805],"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7,"line":{"color":"rgba(214,39,40,1)"}},"name":"Disapprove %","hovertemplate":["<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-5-2"><div class="card-body html-fill-item html-fill-container" data-title="Stable (7-day)">
+<div class="cell-output-display html-fill-item html-fill-container">
+<div class="plotly html-widget html-fill-item html-fill-container" id="htmlwidget-7bdc2bc8d0b702316cd3" style="width:100%;height:406px;"></div>
+<script type="application/json" data-for="htmlwidget-7bdc2bc8d0b702316cd3">{"x":{"visdat":{"4a8a7fb79f70":["function () ","plotlyVisDat"],"4a8a7044b391":["function () ","data"],"4a8a2e692e2c":["function () ","data"],"4a8a7b566281":["function () ","data"],"4a8a645d4269":["function () ","data"]},"cur_data":"4a8a645d4269","attrs":{"4a8a7044b391":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(121, 231, 222, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"4a8a2e692e2c":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7},"name":"Approve %","hovertemplate":"<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true},"4a8a7b566281":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(227, 98, 120, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"4a8a645d4269":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7},"name":"Disapprove %","hovertemplate":"<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":60,"r":40},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickformat":"%b %d","dtick":86400000,"range":["2026-02-02","2026-04-22"],"gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"yaxis":{"domain":[0,1],"automargin":true,"title":"","ticksuffix":"%","rangemode":"tozero","gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"legend":{"orientation":"h","x":0.5,"xanchor":"center","y":1.05,"yanchor":"bottom"},"hovermode":"x unified","paper_bgcolor":"white","plot_bgcolor":"white","font":{"family":"Mulish, sans-serif"},"showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":true,"modeBarButtonsToRemove":["zoom2d","pan2d","select2d","lasso2d","zoomIn2d","zoomOut2d","autoScale2d","resetScale2d","hoverClosestCartesian","hoverCompareCartesian"],"displaylogo":false,"scrollZoom":false},"data":[{"fillcolor":"rgba(121, 231, 222, 0.2)","x":["2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-19","2026-04-19","2026-04-18","2026-04-17","2026-04-16","2026-04-15","2026-04-14","2026-04-13","2026-04-12","2026-04-11","2026-04-10","2026-04-09","2026-04-08","2026-04-07","2026-04-06","2026-04-05","2026-04-04","2026-04-03","2026-04-02","2026-04-01","2026-03-31","2026-03-30","2026-03-29","2026-03-28","2026-03-27","2026-03-26","2026-03-25","2026-03-24","2026-03-23","2026-03-22","2026-03-21","2026-03-20","2026-03-19","2026-03-18","2026-03-17","2026-03-16","2026-03-15","2026-03-14","2026-03-13","2026-03-12","2026-03-11","2026-03-10","2026-03-09","2026-03-08","2026-03-07","2026-03-06","2026-03-05","2026-03-04","2026-03-03","2026-03-02","2026-03-01","2026-02-28","2026-02-27","2026-02-26","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-06","2026-02-05","2026-02-04","2026-02-03"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[31.499679457054313,29.628377380554149,25.958108276295,25.094333928869929,26.130658407590072,26.271985972098012,26.221721017115286,29.224203225178762,29.400340900322604,32.095865424352361,33.926955025330507,32.629630455446389,30.702724825172762,31.261527278152379,28.678394328839975,30.211812939007139,29.930522787428103,30.592028516395271,29.098016905475433,28.25316070017751,28.987915445131417,29.350849127760149,27.770283131012775,30.301149735419962,27.5726167366529,26.68417327709528,24.776584323353248,21.438326792121831,23.113838543531788,22.006840223683682,21.295187202064973,22.187011510902988,20.743507817670881,19.943663362863315,25.204741643595284,21.992753827852763,23.110020209070907,24.035940800117316,24.106202657821097,26.289455964836879,26.493342833689564,24.251087728605441,25.537389958663248,24.811519843249357,22.993929051090259,21.273659261255919,21.902163769847956,23.36522842635501,24.803865676964641,22.913905928631728,24.63992191557486,27.926992925177242,31.135580740005004,27.061582261008265,23.167609472750765,24.207964305450783,28.781621759710269,29.14518834604976,25.848233677296196,25.826459531508128,27.281355330113449,27.2721843560834,24.881085965125237,20.126739370154649,20.890750511681063,25.788544832307291,25.494665556763231,26.779946146413707,26.779946146413707,46.672855224413716,44.782947800082319,45.553782910140605,36.122953431530568,34.957394450651996,40.465139689643749,43.779088632142724,44.791922556321779,43.068097388056337,43.218519916708729,47.435784828908105,46.160238180045923,41.283548285156805,39.637417001788428,43.989558425728518,48.75139071339018,44.55815883303449,40.704432703042549,40.190635358167661,42.735734865957539,41.536181773757129,40.800849074610781,39.626979133884333,43.12442481628409,43.537083319110607,45.239467061408988,44.878030028274765,47.545502157413395,48.053301501659533,46.757729495333223,46.608008585313378,51.034888300131989,48.7707812496228,52.444908055290441,42.333246416846293,41.948399533460382,44.416345578293225,41.692649761953085,41.793137879415525,42.299503633778997,40.021306756844943,43.390666243591816,45.134317533095214,45.788603759127113,48.470065883252644,45.533320674472719,46.00015884258648,45.477574586375965,45.340979565228452,46.220286073835481,48.224136689394228,48.431284889883386,49.192039666670979,48.220557544205434,50.80409588791899,49.960740925760874,52.640559156888443,53.130127989733289,50.473559438690565,47.247818161779861,48.248350717796498,44.707069866922758,44.099194255517418,42.990772196987841,41.427494145412602,40.669838130651428,44.709181444353774,45.068261319698891],"name":"rgba(121, 231, 222, 0.2)","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19"],"y":[38.283970388376602,37.168779412453965,33.313973203473211,33.260914037141262,34.560715302288955,35.185590113807713,35.464395442019018,38.736276971487634,38.324079531051233,41.284712431521456,43.528541507531898,42.635094806167416,40.33173287546682,41.032811583035681,38.449475936522703,39.701926302839055,39.180903838655745,39.408082602894751,37.659151489655457,36.797070132702977,37.232745015753693,37.675503985173314,36.651801902742747,39.385607809336307,36.680610247890009,35.909245405095248,34.083625283472529,30.729816774483389,32.706671088655391,31.899989051549603,31.493918482009033,33.301678544598104,31.345953675565632,31.138454889854806,38.824824849442862,35.381767538737776,37.072454254601446,35.321974692715344,35.431966076577162,37.171378733248204,37.019422495551481,34.564558878440103,35.388428510036121,34.174301581179982,33.059176933687176,30.450319197570124,31.35150642222937,32.450705100056069,33.769800271461094,31.552270643399694,32.672177309308701,36.242575879105864,39.943485726697588,35.525570343368393,31.402513237269599,32.745756295303792,37.4709299698781,38.290486587478931,34.533376797002461,34.447278459782233,36.036638943217611,35.525636494113058,32.673112827384493,27.542066910403324,28.506851971605819,35.671163871223946,35.138806678422775,36.726400685413715],"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7,"line":{"color":"rgba(255,127,14,1)"}},"name":"Approve %","hovertemplate":["<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(227, 98, 120, 0.2)","x":["2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-19","2026-04-19","2026-04-18","2026-04-17","2026-04-16","2026-04-15","2026-04-14","2026-04-13","2026-04-12","2026-04-11","2026-04-10","2026-04-09","2026-04-08","2026-04-07","2026-04-06","2026-04-05","2026-04-04","2026-04-03","2026-04-02","2026-04-01","2026-03-31","2026-03-30","2026-03-29","2026-03-28","2026-03-27","2026-03-26","2026-03-25","2026-03-24","2026-03-23","2026-03-22","2026-03-21","2026-03-20","2026-03-19","2026-03-18","2026-03-17","2026-03-16","2026-03-15","2026-03-14","2026-03-13","2026-03-12","2026-03-11","2026-03-10","2026-03-09","2026-03-08","2026-03-07","2026-03-06","2026-03-05","2026-03-04","2026-03-03","2026-03-02","2026-03-01","2026-02-28","2026-02-27","2026-02-26","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-06","2026-02-05","2026-02-04","2026-02-03"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[19.678843348240814,19.670537868156774,18.926695856623827,19.950111899383085,22.055275197418485,22.760303729357794,23.38789140944899,22.301728616916392,22.557535667903299,18.686108894619263,20.215934351646013,18.557677185390332,16.194810750251108,18.709365449232447,16.097906877819213,13.9651949278387,17.670965566773724,18.190030047309357,19.114752007700968,23.706536714137062,21.348227675066049,23.803597318460689,27.529587403832245,22.226679896150753,22.777415961897024,27.193154854474816,26.182408735916336,26.569463009439442,24.864060212804979,23.399477231143827,28.237283467726325,28.271626389288929,21.558880240538432,21.984226181204864,19.06181777454854,22.072870627585182,17.621417298885106,18.033538413694412,17.229797022147558,16.511101355920172,18.170235986680776,16.304865456370532,16.629293588721644,17.304461862882171,13.424819884649358,14.787694326994078,16.113096505577019,18.654727258680591,24.799581787818916,27.692889528464214,29.180253704788839,28.482994785571314,26.334673651669533,29.574140742838274,23.23695189370002,20.406246097436345,19.981434451876094,18.761412453228811,19.475167961376833,18.449194322395492,17.43515684883047,21.602393332356208,23.801277394461163,24.031629259027465,25.192554599608979,22.84432163448794,25.148460447578096,24.233133104851355,24.233133104851355,45.488059466931873,45.912423597129496,42.340634664794607,42.661252328202629,41.806030026429831,40.317977415030107,37.969676618517475,33.779289804237855,34.814510968991783,37.055790049825013,36.265902719549928,36.229906686230485,37.090353423335912,40.40638204548442,47.347292066313486,43.91979202315828,46.22414861850207,47.739019772867785,47.813534676812012,44.829269152562247,37.691209333552223,35.310261313416866,32.953175194073495,32.265629802869363,34.97686303061618,35.702827414222121,36.722951805004215,38.317955010065177,36.461664696474919,38.567087896884736,39.749342106437467,43.504823304548154,49.557012515847191,44.912467774275846,46.167621125681748,44.86490676550229,52.759646826895754,51.923228365158295,44.63604877523256,45.695594495560101,46.910206139873736,45.275070449688378,46.320050660536253,41.013827015981967,38.822162102407134,45.441834833206862,40.3411984593223,37.889808477359473,41.400846573695169,35.105881795843842,33.754922300885212,34.044229206885845,29.353900746266348,32.300170244689383,35.408818696570592,31.96182607220025,35.85883390871799,37.452944705992486,34.78898419462341,40.817712482829833,41.980727398446149,43.017124772087591,41.693976359702148,39.961625041591212,36.855954264099189,34.25775860090355,35.444346102674295,33.682025015826412],"name":"rgba(227, 98, 120, 0.2)","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19"],"y":[26.680434182033615,27.557441985415537,26.592227228763686,28.403033081741135,31.00845011950485,32.227140044529975,33.202508090768291,32.141228007681271,31.687624075366568,26.737546544621338,28.834439528819249,27.208255547054161,24.078318411225681,27.059092072901521,24.199038561254298,21.659547837052525,25.857597386829784,25.972476174097288,27.110316901772403,32.553691643916117,29.619018076212761,32.072397888891494,36.485711118519554,30.524420999278945,31.895621488939497,36.756602757505533,35.728739592802356,36.739834574656591,35.279827354182544,34.017763003188193,40.080255916442312,40.515636608092343,33.211893503020363,34.075923653443304,31.987142774412192,35.814941571716183,30.56312030171663,28.891440260065941,27.898442459516147,26.486383026197547,28.244095498372978,26.513908630687371,26.166060501471883,26.140662446749175,22.845224843759361,23.870434760533783,25.711678909496943,28.172968296116409,34.814425470190578,37.753212102638109,38.459636738828316,37.353571702036689,35.127232837413906,38.460716404575876,31.821666969592222,28.748299760386125,28.105670569053288,27.513657586389368,28.265479005600923,26.631852645693638,25.607223326534161,29.786034975436841,32.059627404745633,32.918829642728646,33.926903463905802,32.592478149641273,35.530442022353796,34.860596285891617],"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7,"line":{"color":"rgba(214,39,40,1)"}},"name":"Disapprove %","hovertemplate":["<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div></div><div class="tab-pane html-fill-item html-fill-container" role="tabpanel" id="card-tabset-5-3"><div class="card-body html-fill-item html-fill-container" data-title="Latest (3-day)">
+<div class="cell-output-display html-fill-item html-fill-container">
+<div class="plotly html-widget html-fill-item html-fill-container" id="htmlwidget-2d02b0c92c5e9d203c6f" style="width:100%;height:406px;"></div>
+<script type="application/json" data-for="htmlwidget-2d02b0c92c5e9d203c6f">{"x":{"visdat":{"4a8a6090cdac":["function () ","plotlyVisDat"],"4a8a42af08bb":["function () ","data"],"4a8a71664f30":["function () ","data"],"4a8a73d91279":["function () ","data"],"4a8a304c015a":["function () ","data"]},"cur_data":"4a8a304c015a","attrs":{"4a8a42af08bb":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(121, 231, 222, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"4a8a71664f30":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7},"name":"Approve %","hovertemplate":"<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true},"4a8a73d91279":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","fillcolor":"rgba(227, 98, 120, 0.2)","line":{"color":"transparent"},"showlegend":false,"hoverinfo":"skip","inherit":true},"4a8a304c015a":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7},"name":"Disapprove %","hovertemplate":"<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":60,"r":40},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickformat":"%b %d","dtick":86400000,"range":["2026-01-29","2026-04-22"],"gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"yaxis":{"domain":[0,1],"automargin":true,"title":"","ticksuffix":"%","rangemode":"tozero","gridcolor":"#E5E7EB","showgrid":true,"fixedrange":true},"legend":{"orientation":"h","x":0.5,"xanchor":"center","y":1.05,"yanchor":"bottom"},"hovermode":"x unified","paper_bgcolor":"white","plot_bgcolor":"white","font":{"family":"Mulish, sans-serif"},"showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":true,"modeBarButtonsToRemove":["zoom2d","pan2d","select2d","lasso2d","zoomIn2d","zoomOut2d","autoScale2d","resetScale2d","hoverClosestCartesian","hoverCompareCartesian"],"displaylogo":false,"scrollZoom":false},"data":[{"fillcolor":"rgba(121, 231, 222, 0.2)","x":["2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-19","2026-04-19","2026-04-18","2026-04-17","2026-04-16","2026-04-15","2026-04-14","2026-04-13","2026-04-12","2026-04-11","2026-04-10","2026-04-09","2026-04-08","2026-04-07","2026-04-06","2026-04-05","2026-04-04","2026-04-03","2026-04-02","2026-04-01","2026-03-31","2026-03-30","2026-03-29","2026-03-28","2026-03-27","2026-03-26","2026-03-25","2026-03-24","2026-03-23","2026-03-22","2026-03-21","2026-03-20","2026-03-19","2026-03-18","2026-03-17","2026-03-16","2026-03-15","2026-03-14","2026-03-13","2026-03-12","2026-03-11","2026-03-10","2026-03-09","2026-03-08","2026-03-06","2026-03-05","2026-03-04","2026-03-03","2026-03-02","2026-03-01","2026-02-28","2026-02-27","2026-02-26","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-14","2026-02-13","2026-02-12","2026-02-11","2026-02-06","2026-02-05","2026-02-04","2026-02-03","2026-02-02","2026-02-01","2026-01-31","2026-01-30"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[34.849562535351147,33.053525276467539,26.971983930751254,23.838203585477288,23.752905112703605,22.688147766043809,25.280585697666979,18.702430641486874,25.678941843622631,28.470996579821584,31.958573861475294,28.431440072600545,26.564803155468574,21.954456455257439,18.011593453383036,29.622076909302297,30.096540089948963,29.953998731767197,29.894411173995461,27.988465919178868,20.75464118597208,29.130349896999832,25.214430723453638,29.130931504080937,24.456375074061569,29.625961389813689,21.692882701697847,22.059720817311902,19.911900663227932,21.348158668001872,26.132363139337567,17.142432462946374,19.019377780552258,29.491402511570108,19.740244088555141,15.850138690401172,17.546373783838696,5.6793588067519689,14.332465060544822,19.313616878972731,17.016754565597804,20.326448051653696,21.928760035724832,17.718264864792772,17.846172238805231,13.478655549548776,17.643062151392215,16.560174791167633,18.769199092575349,20.386534709088988,14.643579920049824,10.441642611987067,9.8907902145507389,13.492195788020872,24.851986770367006,28.239152007494393,24.668675684303057,21.459058216088884,18.834025912477887,22.279322140449885,17.159161267672058,13.301072822564969,17.492517292249442,27.444930415569115,33.426993995645226,25.38762800152481,16.419454261316385,9.9431391750682376,15.965399719385253,15.930061285488458,18.666160092812621,17.033095588594563,25.649673866255217,23.684532462395072,22.919953356345587,22.919953356345587,57.447708980803213,55.113969309772202,57.798998537072777,42.246265687089114,42.249191301525421,38.880199412838238,38.900011249801182,30.527048995040655,37.917105375864359,48.508471924584143,58.583346440549811,52.998766677978267,44.271012963524527,40.337554232767253,46.931971100801533,48.711850235440536,41.967497395040851,43.801792914651941,49.759849458819218,54.295224955017765,53.73069012832854,36.988545431262438,29.586089787837576,31.55083639448948,42.692624056486203,46.01401219632708,45.024719723712217,39.813127673564239,39.444283237853035,42.000803114805599,52.587123442165492,73.321838133057256,62.170526384953597,54.256373039818719,49.184763397942923,59.79904460391019,52.25764174535923,47.329366649918136,53.89084917357556,47.8885462003824,48.759868053288152,61.683481563002942,51.36164157993619,48.707936681682561,53.104604536964338,45.955250449797916,43.025297527202213,46.476333639615049,44.485590583463875,51.770998744045485,46.96681209624716,55.605253665595399,57.155055041958583,59.091115449161016,49.444163966298085,56.507494562376358,57.888987169814889,57.274872215952264,60.695610073407067,64.622988311120594,41.952937518738629,49.790038552144267,52.12007575632596,57.502224545833855,61.575621449131056,58.057316036162796,53.446043512887442,48.569125771800167,50.48570966523134,44.55432613967524,46.903670716278654,47.084968896536047,51.762381397235167,56.689660787338148,53.922833016685878],"name":"rgba(121, 231, 222, 0.2)","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19"],"y":[44.386197776018513,44.871593031902847,39.367182663993212,35.461586241006671,35.328287914491128,33.621236952859526,37.883147681449159,33.635778206643522,39.56249267825504,43.264156307992188,46.767097655303175,42.966832309217203,39.342439455897264,35.872247503700855,29.982265486060832,47.122532610211444,45.396075081678013,43.614435473859729,43.891699171905174,42.247980240777615,35.099402576135077,44.11073267308042,41.184742882706111,42.368092584838166,35.711593585154368,40.698480066929584,33.089236642580858,34.268027228463474,31.468599095215072,33.651704558899894,39.618483838150951,32.925184572314471,35.190509680244226,45.587442037286522,34.250056070921644,31.869342445391784,35.718611478707132,26.504362728335053,33.295053402952021,39.556330741441457,33.100758981770362,37.291410545736206,42.049643210339212,45.520051498925021,35.216647840485358,27.739729332177188,28.543672694622625,28.186651232365932,31.896959408143783,33.200273452708032,28.668101988268013,20.996239503238272,19.738440001194157,25.240370609641655,39.291338449347776,41.267188481256078,37.214262571561136,32.630425565370416,30.400761653759371,35.495586187945207,32.045566184236797,26.819313527666111,30.881765127886986,40.221848546773693,46.005170218097518,36.948049963054473,27.168279818590374,20.235094085054449,27.432705484593217,27.405130349163347,30.457675697169023,29.639680637841835,41.724336201663995,39.399250886083635,40.1838311685744],"type":"scatter","mode":"lines+markers","line":{"color":"#79E7DE","width":2.5},"marker":{"color":"#79E7DE","size":7,"line":{"color":"rgba(255,127,14,1)"}},"name":"Approve %","hovertemplate":["<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>","<b>Approve<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(227, 98, 120, 0.2)","x":["2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-19","2026-04-19","2026-04-18","2026-04-17","2026-04-16","2026-04-15","2026-04-14","2026-04-13","2026-04-12","2026-04-11","2026-04-10","2026-04-09","2026-04-08","2026-04-07","2026-04-06","2026-04-05","2026-04-04","2026-04-03","2026-04-02","2026-04-01","2026-03-31","2026-03-30","2026-03-29","2026-03-28","2026-03-27","2026-03-26","2026-03-25","2026-03-24","2026-03-23","2026-03-22","2026-03-21","2026-03-20","2026-03-19","2026-03-18","2026-03-17","2026-03-16","2026-03-15","2026-03-14","2026-03-13","2026-03-12","2026-03-11","2026-03-10","2026-03-09","2026-03-08","2026-03-06","2026-03-05","2026-03-04","2026-03-03","2026-03-02","2026-03-01","2026-02-28","2026-02-27","2026-02-26","2026-02-25","2026-02-24","2026-02-23","2026-02-22","2026-02-21","2026-02-20","2026-02-19","2026-02-18","2026-02-17","2026-02-16","2026-02-15","2026-02-14","2026-02-13","2026-02-12","2026-02-11","2026-02-06","2026-02-05","2026-02-04","2026-02-03","2026-02-02","2026-02-01","2026-01-31","2026-01-30"],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","line":{"color":"transparent"},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"y":[10.680142173137931,11.953756593835468,12.896346662157686,18.525900713107564,20.657530235476969,15.456612493451638,13.697155977790715,7.4707384437684281,15.70836449525998,11.565168902546901,18.309693088695902,13.33326555647967,20.297344700069697,19.578554954517262,16.996998433610568,12.695760505558843,10.187993231959535,15.238034145680773,16.724716367613592,16.985814367065057,13.71998750985435,14.08434789894277,7.151799740169726,10.70569750550959,14.099544120078461,16.301975269452605,22.03284630588832,23.344824325513205,21.638542433128201,26.673135563665262,23.152277418520026,18.912979014481955,10.879542438305133,9.6440872903503685,20.257244103543552,17.291486069991453,20.936560670823283,12.796577150393581,19.265728990727048,5.3518122101660399,9.5649145634702055,8.848237170768952,13.881127936086637,9.1363780857945169,15.898115257147886,21.648650329229589,13.720668726416708,10.061794794112581,6.4666962343538454,9.6618458017177318,4.7846324912923608,16.845156916480821,23.2250577729877,22.041682527778832,25.219140235476168,25.615806616002857,30.238015482764936,25.181341171141714,22.883471495810394,22.235212317944892,23.279691541115668,15.522032705920786,16.089521491928007,17.301472116832301,17.572231109299182,20.21299912173863,17.22655363962706,19.545600022843146,23.658693325415189,32.651700489611066,31.693508113334701,25.851688358994807,11.070677295534956,14.220759436727439,5.1097273520504585,5.1097273520504585,35.706416473257541,44.285269816286657,40.549483767936614,57.749403277969357,60.644282583680507,61.658180505867378,51.286765447887696,49.817847182425709,43.867658414546298,46.335084632648758,42.88981658622572,42.862128828129372,44.840837341208641,47.50001545327229,53.967150589112364,51.279981431026279,49.657382515443757,50.194587564584012,57.739241450238566,53.089777276926533,54.687812763539412,58.676953942357038,57.801686896967475,53.333245544638018,28.972138517733349,33.975571358299817,27.719496708865147,35.434214881629075,37.485132871305723,56.212440342063999,50.647752829127768,64.644045245961152,52.715770087515345,33.269628868084389,36.14201805756754,31.088505160632916,60.805083058094603,58.686467323825809,60.071317575683267,52.466717527024365,47.628573569040327,32.334352902906531,37.185879967041572,50.232691965435436,48.229939141043502,54.040976582909948,47.028348441296721,49.584568372684366,47.348142195327469,34.635922476864899,36.557993414098519,31.568948427747035,35.96815356301363,40.832172537058611,41.448857101408763,45.103315345004134,41.861177498986038,38.877440322372905,33.1387616006689,42.964082402464932,46.176945791351287,51.926150439632288,47.581127826708006,40.456844399183254,46.443662296300026,37.698787057846133,41.679836893009174,30.765042830298562,35.68505696794071,37.88187983773885,45.700277849668517,43.127938700061414,35.680146792713835,31.364407783047266,26.277106185771693],"name":"rgba(227, 98, 120, 0.2)","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19"],"y":[18.478624179454812,21.659082188441367,24.288246727435762,30.826919706584487,33.178904042572746,26.669246165595244,24.691106472865712,19.117890637033494,28.694100694134576,24.631977980196517,32.376677692497964,26.89505497783146,33.93923626338885,35.752352697074777,31.586972112480925,27.829921454011885,21.663377416314216,27.057737234026842,29.292946933299813,31.044564856034597,27.584422305631556,27.458260218000692,21.559976651591676,21.137322966628314,25.328768767088487,25.468948873158752,34.690494250607898,36.464696349098787,34.333445437212461,40.357056073287609,35.691108279781766,34.572835489958699,24.032711202673354,20.989220096628451,33.942908836291942,34.879101798507911,40.503939123253275,35.741522237109699,40.035406024410825,18.220158685399479,22.853466310518872,21.058933019426672,33.29844901180099,36.890211665877835,33.272934043137823,38.930545335646791,25.602900798861217,22.748004837870827,17.093096471609499,21.818708580008774,16.878385504512856,35.089201230559418,40.513372334977589,40.359318235067938,39.953476499507786,39.352791946464691,43.988628466501751,37.687964367862861,36.270427005627077,36.757596874485579,38.623421065114016,31.511024079596538,30.465179416568322,30.081800472480836,30.231023847762451,33.274041877193696,30.547106027086677,34.681723602634428,37.472729386651444,47.154940497739226,46.168895348507604,41.800545818482085,25.810080531735785,29.253014626507046,20.408071912653998],"type":"scatter","mode":"lines+markers","line":{"color":"#E36278","width":2.5},"marker":{"color":"#E36278","size":7,"line":{"color":"rgba(214,39,40,1)"}},"name":"Disapprove %","hovertemplate":["<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>","<b>Disapprove<\/b>: %{y:.1f}%<extra><\/extra>"],"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div></div></div><bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="h4">
+About
+</div>
+<p>This tracker displays weighted estimates of NYC mayoral approval (Mamdani) based on daily online survey data collected by <a href="https://www.niradata.com">Nira Data</a>.</p>
+<p><span style="color: #79E7DE;"><strong>Approve %</strong></span> and <span style="color: #E36278;"><strong>Disapprove %</strong></span> use total respondents as denominator (including “Don’t know”). Error bars / shaded ribbons show 95% confidence intervals.</p>
+<p>The <strong>Latest (3-day)</strong> tab uses a rolling 3-day window; the <strong>Stable (7-day)</strong> tab appears once 7+ days of data are collected. The <strong>Extended (30-day)</strong> tab provides the most stable estimate using a wider rolling window (requires 10+ distinct days of data).</p>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+</div>
+<div id="methodology" class="dashboard-page tab-pane grid-skip html-fill-item html-fill-container" data-orientation="rows" aria-labelledby="tab-methodology">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr); grid-auto-columns: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="h4">
+Overview
+</div>
+<p>This tracker displays weighted estimates of NYC mayoral approval based on daily online survey data. All three estimates are weighted to match NYC adult population demographics using iterative proportional fitting (raking). Confidence intervals are 95%. Approval is reported using the Gallup convention: “Don’t know” responses are included in the denominator, so Approve% + Disapprove% + DK% = 100%.</p>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 24%">
+<col style="width: 25%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Estimate</th>
+<th>Rolling Window</th>
+<th>Weighting Tier</th>
+<th>Min. Sample Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Latest (3-day)</td>
+<td>3 days</td>
+<td>Lite</td>
+<td>50 respondents, 3 distinct days</td>
+</tr>
+<tr class="even">
+<td>Stable (7-day)</td>
+<td>7 days</td>
+<td>Standard</td>
+<td>100 respondents, 7 distinct days</td>
+</tr>
+<tr class="odd">
+<td>Extended (30-day)</td>
+<td>30 days</td>
+<td>Standard</td>
+<td>100 respondents, 10 distinct days</td>
+</tr>
+</tbody>
+</table>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 60%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Approve %</td>
+<td>Share of all respondents who approve (DK included in denominator)</td>
+</tr>
+<tr class="even">
+<td>Disapprove %</td>
+<td>Share of all respondents who disapprove (DK included in denominator)</td>
+</tr>
+<tr class="odd">
+<td>Confidence interval</td>
+<td>95% CI derived from survey design-based standard errors</td>
+</tr>
+<tr class="even">
+<td>Convention</td>
+<td>Gallup-style: Approve% + Disapprove% + DK% = 100%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<p>The Latest estimate uses <strong>Lite Weighting</strong> with fewer categories to accommodate smaller sample sizes:</p>
+<ul>
+<li>Age (3 categories: 18-34, 35-54, 55+)</li>
+<li>Gender (2 categories: Male, Female)</li>
+<li>Borough (5 categories)</li>
+<li>Race/Ethnicity (4 categories: White, Black, Hispanic, Asian/Other)</li>
+<li>2025 Mayoral Vote (4 categories: Mamdani, Cuomo, Other candidate, No vote)</li>
+</ul>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div><div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-rows: minmax(3em, max-content); grid-auto-columns: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-fill="false" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<p>The Stable and Extended estimates use <strong>Standard Weighting</strong> with the following variables:</p>
+<ul>
+<li>Age × Gender (joint distribution, 12 cells)</li>
+<li>Borough (5 categories: Manhattan, Brooklyn, Queens, Bronx, Staten Island)</li>
+<li>Race/Ethnicity (4 categories: White, Black, Hispanic, Asian/Other)</li>
+<li>Education (4 categories: HS or less, Some college, Bachelor’s, Graduate+)</li>
+<li>2025 Mayoral Vote (4 categories: Mamdani, Cuomo, Other candidate, No vote)</li>
+<li>Vote × Borough (joint, 20 cells — when sample size permits)</li>
+</ul>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div>
+</div>
+</div>
+<div class="html-fill-item html-fill-container bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr);
+grid-auto-rows: minmax(0, 1fr);">
+<div class="card html-fill-item html-fill-container bslib-card" data-bslib-card-init="" data-require-bs-caller="card()" data-full-screen="false">
+<div class="card-body html-fill-item html-fill-container">
+<div class="h4">
+Additional
+
+Notes
+</div>
+<ul>
+<li><strong>Population targets</strong> are derived from the American Community Survey (ACS) 2023 5-year estimates and official NYC Board of Elections results.</li>
+<li><strong>Weight trimming</strong> is applied to prevent any single respondent from having excessive influence (weights capped at 6× the mean).</li>
+<li><strong>Weight normalization</strong>: weights are normalized to mean = 1.</li>
+<li><strong>Design effect</strong> measures the loss of precision due to weighting; values typically range from 1.2 to 3.0.</li>
+<li><strong>Data collection</strong> is conducted daily via online panel by <a href="https://www.niradata.com">Nira Data</a>.</li>
+</ul>
+</div>
+<bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
+    <template>Expand</template>
+    <span class="bslib-full-screen-enter badge rounded-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="height:1em;width:1em;" aria-hidden="true" role="img"><path d="M20 5C20 4.4 19.6 4 19 4H13C12.4 4 12 3.6 12 3C12 2.4 12.4 2 13 2H21C21.6 2 22 2.4 22 3V11C22 11.6 21.6 12 21 12C20.4 12 20 11.6 20 11V5ZM4 19C4 19.6 4.4 20 5 20H11C11.6 20 12 20.4 12 21C12 21.6 11.6 22 11 22H3C2.4 22 2 21.6 2 21V13C2 12.4 2.4 12 3 12C3.6 12 4 12.4 4 13V19Z"></path></svg>
+    </span>
+</bslib-tooltip><script data-bslib-card-init="">bslib.Card.initializeAllCards();</script></div><div id="3ade8a4a-fb1d-4a6c-8409-ac45482d5fc9" class="hidden html-fill-item html-fill-container">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (_event) {
+  if (window.bslib.Card) {
+    window.bslib.Card.initializeAllCards();
+  }
+}); 
+</script>
+  
+
+
+
+</body></html>
